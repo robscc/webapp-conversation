@@ -6,8 +6,21 @@ import RehypeKatex from 'rehype-katex'
 import RemarkGfm from 'remark-gfm'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { atelierHeathLight } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import { replaceImageUrlsInMarkdownAdvanced, type FileInfo } from '@/utils/image-url-replacer'
 
-export function Markdown(props: { content: string }) {
+interface MarkdownProps {
+  content: string
+  files?: FileInfo[]
+}
+
+export function Markdown(props: MarkdownProps) {
+  const { content, files } = props
+
+  // 处理图片URL替换
+  const processedContent = files && files.length > 0
+    ? replaceImageUrlsInMarkdownAdvanced(content)
+    : content
+
   return (
     <div className="markdown-body">
       <ReactMarkdown
@@ -38,7 +51,7 @@ export function Markdown(props: { content: string }) {
         }}
         linkTarget={'_blank'}
       >
-        {props.content}
+        {processedContent}
       </ReactMarkdown>
     </div>
   )

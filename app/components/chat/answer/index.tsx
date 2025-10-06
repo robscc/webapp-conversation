@@ -81,8 +81,11 @@ const Answer: FC<IAnswerProps> = ({
   allToolIcons,
   suggestionClick = () => { },
 }) => {
-  const { id, content, feedback, agent_thoughts, workflowProcess, suggestedQuestions = [] } = item
+  console.log('item:', item)
+  const { id, content, feedback, agent_thoughts, workflowProcess, message_files = [], suggestedQuestions = [] } = item
   const isAgentMode = !!agent_thoughts && agent_thoughts.length > 0
+
+  console.log('message_files:', message_files)
 
   const { t } = useTranslation()
 
@@ -202,7 +205,7 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <StreamdownMarkdown content={content} />
+                    <StreamdownMarkdown content={content} files={message_files} />
                   ))}
               {suggestedQuestions.length > 0 && (
                 <div className="mt-3">
