@@ -79,6 +79,19 @@ export function replaceImageUrlsInMarkdownAdvanced(
   // ![5bd5137995c0418a948d6cf1c7bfd7f0.png](https://upload.dify.ai/files/tools/0b86246f-af97-4346-a021-45809d985234.png?timestamp=1759762166&nonce=e86b1721cf5af182c2826f92319795b0&sign=Bj3Ck5PsQ7Ee74bPsYTD1Xb7lvavI_gyUB2Kw13zmxQ=) 提取出 https://upload.dify.ai/files/tools/0b86246f-af97-4346-a021-45809d985234.png?timestamp=1759762166&nonce=e86b1721cf5af182c2826f92319795b0&sign=Bj3Ck5PsQ7Ee74bPsYTD1Xb7lvavI_gyUB2Kw13zmxQ=
   console.log('matchRealUrl', matchRealUrl)
 
+  // 替换格式0： ![alt text](/files/tools/related_id.png) and remove !
+  result = result.replace(
+    /!\[([^\]]*)\]\(\/files\/tools\/([^)]+?)(?:\.[^)]+)?\)/g,
+    (match, altText, _relatedId) => {
+      const actualUrl = matchRealUrl
+      if (actualUrl) {
+        matched = true
+        return `${altText}](${actualUrl})`
+      }
+      return match
+    },
+  )
+
   // 替换格式1: [alt text](/files/tools/related_id.png) - 将图片转换为链接
   result = result.replace(
     /\[([^\]]*)\]\(\/files\/tools\/([^)]+?)(?:\.[^)]+)?\)/g,
@@ -110,7 +123,8 @@ export function replaceImageUrlsInMarkdownAdvanced(
     result = `${result}\n![图片附件](${matchRealUrl})`
   }
 
-  console.log('result:', result)
+  // remove the <hidden>{content}</hidden> wrap tag and its content
+  result = result.replace(/<hidden>(.*?)<\/hidden>/g, '')
 
   return result
 }

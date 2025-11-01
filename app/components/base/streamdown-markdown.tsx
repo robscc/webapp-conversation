@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Streamdown } from 'streamdown'
 import 'katex/dist/katex.min.css'
 import { replaceImageUrlsInMarkdownAdvanced } from '@/utils/image-url-replacer'
@@ -12,10 +12,10 @@ interface StreamdownMarkdownProps {
 }
 
 export function StreamdownMarkdown({ content, className = '', files = [] }: StreamdownMarkdownProps) {
-  console.log('StreamdownMarkdown', content)
-  console.log('StreamdownMarkdown files:', files)
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null)
   // 处理图片URL替换
   const processedContent = replaceImageUrlsInMarkdownAdvanced(content, files)
+
   return (
     <div className={`streamdown-markdown ${className}`}>
       <Streamdown
@@ -77,6 +77,20 @@ export function StreamdownMarkdown({ content, className = '', files = [] }: Stre
               return <div {...props}>{children}</div>
             }
             return <div {...props}>{children}</div>
+          },
+          img: ({ src, alt, ...props }) => {
+            return (
+              <a
+                href={src}
+                target="_blank"
+                download={alt}
+                className="relative inline-block group"
+                onMouseEnter={() => setHoveredImage(src || null)}
+                onMouseLeave={() => setHoveredImage(null)}
+              >
+                <img {...props} src={src} alt={alt} className="max-w-full h-auto rounded-lg" />
+              </a>
+            )
           },
         }}
       >
