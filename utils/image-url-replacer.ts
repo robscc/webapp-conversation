@@ -80,17 +80,17 @@ export function replaceImageUrlsInMarkdownAdvanced(
   console.log('matchRealUrl', matchRealUrl)
 
   // 替换格式0： ![alt text](/files/tools/related_id.png) and remove !
-  result = result.replace(
-    /!\[([^\]]*)\]\(\/files\/tools\/([^)]+?)(?:\.[^)]+)?\)/g,
-    (match, altText, _relatedId) => {
-      const actualUrl = matchRealUrl
-      if (actualUrl) {
-        matched = true
-        return `${altText}](${actualUrl})`
-      }
-      return match
-    },
-  )
+  //   result = result.replace(
+  //     /!\[([^\]]*)\]\(\/files\/tools\/([^)]+?)(?:\.[^)]+)?\)/g,
+  //     (match, altText, _relatedId) => {
+  //       const actualUrl = matchRealUrl
+  //       if (actualUrl) {
+  //         matched = true
+  //         return `${altText}](${actualUrl})`
+  //       }
+  //       return match
+  //     },
+  //   )
 
   // 替换格式1: [alt text](/files/tools/related_id.png) - 将图片转换为链接
   result = result.replace(
@@ -117,6 +117,11 @@ export function replaceImageUrlsInMarkdownAdvanced(
       return match
     },
   )
+
+  // 替换格式3: 开始的!! -> 开始的!
+  console.log(result, 'before result')
+  result = result.replace(/!!\[/g, '![')
+  console.log(result, 'after result')
 
   if (!matched && files && files.length > 0) {
     // append image to result tail
