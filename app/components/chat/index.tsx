@@ -199,7 +199,7 @@ const Chat: FC<IChatProps> = ({
         })}
       </div>
       {!isHideSendInput && (
-        <div className="fixed z-10 bottom-0 left-1/2 transform -translate-x-1/2 pc:ml-[105px] tablet:ml-[76px] mobile:ml-0 pc:w-[68%] tablet:w-[72%] mobile:tablet:w-full max-w-full mobile:w-[95%] px-3.5">
+        <div className="fixed z-10 bottom-10 left-1/2 transform -translate-x-1/2 pc:ml-[105px] tablet:ml-[76px] mobile:ml-0 pc:w-[68%] tablet:w-[72%] mobile:tablet:w-full max-w-full mobile:w-[95%] px-3.5">
           <div className="p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto">
             {visionConfig?.enabled && (
               <>
